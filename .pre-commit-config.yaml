@@ -32,5 +32,8 @@ repos:
         ### DBT BUILD
       - id: dbt-run
         verbose: true
-        entry: bash -c "dbt build --select state:modified.body+ --defer --state ./etc"
+        
+        entry: bash -c "dbt build"
+        # alternative to dbt build -> compare with saved old version manifest in .etc folder
+        #entry: bash -c "dbt build --select state:modified.body+ --defer --state ./etc"
         name: DBT Stage - build
