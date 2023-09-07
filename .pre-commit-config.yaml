@@ -1,19 +1,19 @@
 default_install_hook_types: [ pre-commit ]
 default_stages: [ commit, manual ]
 minimum_pre_commit_version: "2.18"
-fail_fast: true
+#fail_fast: true
 repos:
   - repo: https://github.com/sqlfluff/sqlfluff
     rev: 2.2.0
     hooks:
       - id: sqlfluff-fix
         name: Lint - SQL Fluff Fix
-        entry: dotenv run sqlfluff fix -f models
+        entry: sqlfluff fix -f models
         verbose: true
         stages: [ manual ]    # this command is available only to run manually
         additional_dependencies: [ "dbt-bigquery", "sqlfluff-templater-dbt" ]
       - id: sqlfluff-lint
-        entry: dotenv run sqlfluff lint
+        entry: sqlfluff lint
         name: Lint - SQL Fluff
         additional_dependencies: [ "dbt-bigquery", "sqlfluff-templater-dbt" ]
   - repo: https://github.com/dbt-checkpoint/dbt-checkpoint
