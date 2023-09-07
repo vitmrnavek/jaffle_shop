@@ -1,0 +1,36 @@
+default_install_hook_types: [ pre-commit ]
+default_stages: [ commit, manual ]
+minimum_pre_commit_version: "2.18"
+fail_fast: true
+repos:
+  - repo: https://github.com/sqlfluff/sqlfluff
+    rev: 2.2.0
+    hooks:
+      - id: sqlfluff-fix
+        name: Lint - SQL Fluff Fix
+        entry: dotenv run sqlfluff fix -f models
+        verbose: true
+        stages: [ manual ]    # this command is available only to run manually
+        additional_dependencies: [ "dbt-bigquery", "sqlfluff-templater-dbt" ]
+      - id: sqlfluff-lint
+        entry: dotenv run sqlfluff lint
+        name: Lint - SQL Fluff
+        additional_dependencies: [ "dbt-bigquery", "sqlfluff-templater-dbt" ]
+  - repo: https://github.com/dbt-checkpoint/dbt-checkpoint
+    rev: v1.1.1
+    hooks:
+      - id: dbt-docs-generate
+        name: Generate Catalog
+        entry: dotenv run dbt docs generate
+        files: models/.*
+      - id: check-model-has-description
+        name: YAML config Models - All models have descriptions
+        files: ^models/
+      - id: check-model-columns-have-desc
+        name: YAML config Models - All columns have descriptions
+        files: ^models/
+        ### DBT BUILD
+      - id: dbt-run
+        verbose: true
+        entry: bash -c "dbt build --select state:modified.body+ --defer --state ./etc"
+        name: DBT Stage - build

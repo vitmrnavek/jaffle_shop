@@ -3,3 +3,7 @@ target/
 dbt_modules/
 logs/
 **/.DS_Store
+etc/manifest.json
+profiles.yml
+datamonk-playground-c1dda34c8de9.json
+.env
